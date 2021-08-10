@@ -1,12 +1,13 @@
-version: '3'
+version: "3"
 services:
   nest-desktop:
     build: nest-desktop
-    container_name: 'nest-desktop-build'
+    container_name: "nest-desktop"
     ports:
-      - '8000:8000'
-  nest-server:
-    build: nest-server
-    container_name: 'nest-server-build'
+      - "8000:8000"
+
+  nest-simulator:
+    build: nest-simulator
+    container_name: "nest-simulator"
     ports:
-      - '5000:5000'
+      - "5000:5000"
