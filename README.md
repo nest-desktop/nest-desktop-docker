@@ -17,23 +17,37 @@ For more information, please see the [User Documentation Page of NEST Desktop](h
 apt install docker.io docker-compose
 ```
 
-##### 2. Start docker engine with service.
+> | :information_source: **Info** |
+> | ----------------------------- |
+>
+> In some cases, the default repositories might be quite outdated.
+> In these cases, please consider [the official guides](https://docs.docker.com/engine/install/#server), which will help you with adding the correct PPAs (own sources of the developer/s).
+
+##### 2. Start the docker engine with `service`.
 
 ```
 service docker start
 ```
 
-##### 3. Create the `docker` group.
+##### 3. Create a user group called _docker_.
 
 ```
 sudo groupadd docker
 ```
 
-##### 4. Add your user to the `docker` group.
+> | :warning: **Warning** |
+> | --------------------- |
+>
+> **Please be aware of the possible security issues when running Docker as `root`**:
+> If you do not want to use it exclusively yourself and locally on your own computer, please consider [Running the Docker daemon as a non-root user](https://docs.docker.com/engine/security/rootless/).
+
+##### 4. Add your user to the `docker` group (might already be done automatically).
 
 ```
 sudo usermod -aG docker $USER
 ```
+
+##### 5. Re-login (or restart) to activate the changes to the user group.
 
 ## Usage
 
