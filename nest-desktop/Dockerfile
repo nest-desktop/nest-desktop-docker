@@ -5,7 +5,7 @@ RUN apt-get update && apt-get install -y python3-pip
 RUN python3 -m pip install --upgrade pip uwsgi
 
 RUN export LC_CTYPE=C.UTF-8 && \
-    python3 -m pip install nest-desktop==3.0.*
+    python3 -m pip install --index-url https://test.pypi.org/simple/ nest-desktop==3.0.*
 
 
 # nginx state for serving content
