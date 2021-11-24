@@ -1,4 +1,4 @@
-FROM nestsim/nest:3.0
+FROM nestsim/nest:3.1
 LABEL maintainer="Sebastian Spreizer <spreizer@web.de>"
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
