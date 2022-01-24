@@ -1,14 +1,14 @@
 # NEST Desktop Docker
 
-Docker container for NEST Desktop and NEST Simulator.
+Docker container for NEST Desktop and its backends, e.g. NEST Simulator.
 
-For more information, please see the [User Documentation Page of NEST Desktop](https://nest-desktop.readthedocs.io) as well as the [User Documentation Page of NEST Simulator](https://nest-simulator.readthedocs.io).
+For more information, please see the [User Documentation Page of NEST Desktop](https://nest-desktop.readthedocs.io)
+as well as the [User Documentation Page of NEST Simulator](https://nest-simulator.readthedocs.io).
 
 ## Preparation
 
 #### Requirements
 
-- docker
 - docker-compose
 
 ##### 1. Install Docker and Docker Compose (with `sudo`).
@@ -38,38 +38,14 @@ sudo usermod -aG docker $USER
 ## Usage
 
 NEST Desktop and NEST Simulator are built in different images.
-Multiple docker containers can be used with `docker` command in different terminals.
-You can also change the flag `-d` (instead of `-i`) in `docker` to detach the container.
+Multiple containers can be managed with `docker-compose`.
 
-A better approach to manage multiple containers is `docker-compose`.
-
-#### Use docker
-
-##### 1. Pull docker images for NEST Simulator and NEST Desktop.
-
-```
-docker pull nestsim/nest:3.0
-docker pull nestdesktop/app:3.0
-```
-
-##### 2. Run docker container of NEST Simulator
-
-```
-docker run --rm -it -p 5000:5000 nestsim/nest:3.0
-```
-
-##### 3. Run docker container of NEST Desktop
-
-```
-docker run --rm -it -p 8000:8000 nestdesktop/app:3.0
-```
-
-#### Alternative: Use Docker Compose
+#### Use Docker Compose
 
 The Docker Compose is a tool for multi-container Docker applications.
 It needs a YAML file to configure services (NEST Desktop and NEST Simulator).
 
-Go to the folder where `docker-compose.yml` is located and then start services.
+Start services with a configuration file in the same directory (By default: `docker-compose.yml`).
 
 ```
 docker-compose up --build
@@ -79,9 +55,15 @@ Hint: Use `--detach` when it should run in the background, and no logs will be d
 
 For more information, read the [official documentation](https://docs.docker.com/compose/reference/).
 
-##### Further methods
+##### Further methods of `docker-compose`
 
-Start a single service.
+Start services with custom configuration file.
+
+```
+docker-compose -f docker-compose-insite.yml up --build
+```
+
+Start a single service, e.g. `nest-simulator`.
 
 ```
 docker-compose start nest-simulator

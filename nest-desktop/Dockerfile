@@ -5,7 +5,7 @@ RUN apt-get update && apt-get install -y python3-pip
 RUN python3 -m pip install --upgrade pip uwsgi
 
 RUN export LC_CTYPE=C.UTF-8 && \
-    python3 -m pip install nest-desktop==3.0.*
+    python3 -m pip install nest-desktop==3.1.*
 
 
 # nginx state for serving content
@@ -26,9 +26,9 @@ COPY ./nginx/site.conf /etc/nginx/conf.d/default.conf
 COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
 
 RUN touch /var/run/nginx.pid && \
-  chown -R www-data:www-data /var/run/nginx.pid && \
-  chown -R www-data:www-data /var/cache/nginx && \
-  chmod -R 777 /var/cache/nginx
+    chown -R www-data:www-data /var/run/nginx.pid && \
+    chown -R www-data:www-data /var/cache/nginx && \
+    chmod -R 777 /var/cache/nginx
 
 EXPOSE 8000
 
