@@ -1,11 +1,7 @@
 # Name the stage "installer"
-FROM ubuntu:bionic AS installer
+FROM python:3.10-slim AS installer
 
-RUN apt-get update && apt-get install -y python3-pip
-RUN python3 -m pip install --upgrade pip uwsgi
-
-RUN export LC_CTYPE=C.UTF-8 && \
-    python3 -m pip install nest-desktop==3.1.*
+RUN pip install nest-desktop==3.1.*
 
 
 # nginx state for serving content
@@ -19,7 +15,7 @@ WORKDIR /usr/share/nginx/html
 RUN rm -rf ./*
 
 # Copy static from installer stage
-COPY --from=installer /usr/local/lib/python3.6/dist-packages/nest_desktop/app/ .
+COPY --from=installer /usr/local/lib/python3.10/site-packages/nest_desktop/app/ .
 
 # Add default to available sites
 COPY ./nginx/site.conf /etc/nginx/conf.d/default.conf

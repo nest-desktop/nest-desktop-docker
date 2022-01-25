@@ -1,4 +1,4 @@
-FROM nestsim/nest:3.1
+FROM ubuntu:20.04
 LABEL maintainer="Sebastian Spreizer <spreizer@web.de>"
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -23,7 +23,7 @@ RUN apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/* && \
     update-alternatives --install /usr/bin/python python /usr/bin/python3 10
 
-# Install requirements for NEST Server
+# Install requirements for NEST Server.
 RUN python3 -m pip install \
     flask \
     flask-cors \
@@ -34,7 +34,7 @@ RUN python3 -m pip install \
 RUN wget https://github.com/nest/nest-simulator/archive/refs/tags/v${NEST_VERSION}.tar.gz -P ${NEST_SRC_PATH} && \
     cd ${NEST_SRC_PATH} && tar -zxf v${NEST_VERSION}.tar.gz
 
-# Patch version number in NEST
+# Patch version number in NEST.
 RUN wget https://github.com/nest/nest-simulator/releases/download/v3.2/nest-simulator-3.2-p1-VersionNumber.patch -P ${NEST_SRC_PATH} && \
     cd ${NEST_SRC_PATH}/nest-simulator-${NEST_VERSION} && patch -p1 < ${NEST_SRC_PATH}/nest-simulator-3.2-p1-VersionNumber.patch
 
@@ -52,4 +52,3 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 
 EXPOSE 5000
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-CMD ["0.0.0.0:5000"]
