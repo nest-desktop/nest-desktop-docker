@@ -5,4 +5,4 @@
 export NEST_SERVER_MODULES=nest,numpy
 export NEST_SERVER_RESTRICTION_OFF=true
 
-uwsgi nest-server
+exec nest-server start
