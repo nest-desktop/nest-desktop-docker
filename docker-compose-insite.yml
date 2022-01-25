@@ -9,6 +9,11 @@ services:
       - "insite-nest-module"
     command: ["http://insite-nest-module:9000"]
 
+  insite-nest-desktop:
+    image: docker-registry.ebrains.eu/nest/nest-desktop:3.1
+    ports:
+      - "8000:80"
+
   insite-nest-module:
     image: rwthvr/insite-nest-module:develop
     ports:
@@ -22,12 +27,3 @@ services:
       NEST_SERVER_PORT: 5000
       NEST_SERVER_RESTRICTION_OFF: 1
       NEST_SERVER_STDOUT: 1
-
-  nest-desktop:
-    image: docker-registry.ebrains.eu/nest/nest-desktop:3.1
-    container_name: "nest-desktop"
-    environment:
-      NEST_DESKTOP_HOST: "0.0.0.0"
-      NEST_DESKTOP_PORT: 8000
-    ports:
-      - "8000:8000"
