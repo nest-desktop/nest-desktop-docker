@@ -17,5 +17,20 @@ RUN rm -rf /usr/share/nginx/html/*
 # Copy static from installer stage
 COPY --from=installer /usr/local/lib/python3.10/site-packages/nest_desktop/app/ /usr/share/nginx/html/
 
+# Run nginx as non-root
+RUN chmod -R 777 /var/cache/nginx
+
+RUN touch /var/run/nginx.pid && \
+    chmod -R 777 /var/run/nginx.pid
+
+EXPOSE 8000
+
+# Copy entrypoint.sh and make it executable
+COPY ./docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# Define the entrypoint
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
 # Containers run nginx with global directives and daemon off
-ENTRYPOINT ["nginx", "-g", "daemon off;"]
+CMD ["nginx", "-g", "daemon off;"]

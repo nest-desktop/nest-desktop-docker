@@ -10,9 +10,9 @@ services:
     command: ["http://insite-nest-module:9000"]
 
   insite-nest-desktop:
-    image: docker-registry.ebrains.eu/nest/nest-desktop:3.1
+    image: docker-registry.ebrains.eu/nest/nest-desktop:dev
     ports:
-      - "8000:80"
+      - "8000:8000"
 
   insite-nest-module:
     image: rwthvr/insite-nest-module:develop

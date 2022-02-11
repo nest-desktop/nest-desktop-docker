@@ -4,7 +4,7 @@ services:
   build-nest-desktop:
     build: ./nest-desktop
     ports:
-      - "8000:80"
+      - "8000:8000"
 
   build-nest-simulator:
     build: ./nest-simulator
