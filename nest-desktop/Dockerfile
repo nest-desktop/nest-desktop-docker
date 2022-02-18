@@ -5,8 +5,10 @@ RUN pip install nest-desktop==3.1.*
 
 
 # nginx state for serving content
-FROM nginx:stable
+FROM nginx:stable-alpine
 LABEL maintainer="Sebastian Spreizer <spreizer@web.de>"
+
+RUN apk add --no-cache jq bash
 
 # Add default to available sites
 COPY ./nginx-default.conf /etc/nginx/conf.d/default.conf
