@@ -2,7 +2,7 @@ version: "3"
 
 services:
   insite-access-node:
-    image: rwthvr/insite-access-node:develop
+    image: rwthvr/insite-access-node:1.1.0
     ports:
       - "8080:8080"
     depends_on:
@@ -12,10 +12,10 @@ services:
   insite-nest-desktop:
     image: docker-registry.ebrains.eu/nest/nest-desktop:dev
     ports:
-      - "8000:8000"
+      - "8000:80"
 
   insite-nest-module:
-    image: rwthvr/insite-nest-module:develop
+    image: rwthvr/insite-nest-module:1.1.0
     ports:
       - "5000:5000"
       - "9000-9005:9000-9005"
