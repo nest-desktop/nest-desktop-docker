@@ -12,7 +12,7 @@ services:
   insite-nest-desktop:
     image: docker-registry.ebrains.eu/nest/nest-desktop:dev
     ports:
-      - "8000:80"
+      - "8000:8000"
 
   insite-nest-module:
     image: rwthvr/insite-nest-module:1.1.0
