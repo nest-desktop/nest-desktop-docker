@@ -2,7 +2,10 @@
 
 . /opt/nest/bin/nest_vars.sh
 
-export NEST_SERVER_MODULES=nest,numpy
-export NEST_SERVER_RESTRICTION_OFF=true
+export NEST_SERVER_BUFFER_SIZE="${NEST_SERVER_BUFFER_SIZE:-65535}"
+export NEST_SERVER_HOST="${NEST_SERVER_HOST:-0.0.0.0}"
+export NEST_SERVER_MODULES="${NEST_SERVER_MODULES:-nest,numpy}"
+export NEST_SERVER_RESTRICTION_OFF="${NEST_SERVER_RESTRICTION_OFF:-true}"
+export NEST_SERVER_STDOUT="${NEST_SERVER_STDOUT:-1}"
 
-uwsgi --module nest.server:app --buffer-size 65535 --http-socket ${1:-0.0.0.0:5000}
+exec nest-server start

@@ -1,36 +1,38 @@
 # Name the stage "installer"
-FROM ubuntu:bionic AS installer
+FROM python:3.10-slim AS installer
 
-RUN apt-get update && apt-get install -y python3-pip
-RUN python3 -m pip install --upgrade pip uwsgi
-
-RUN export LC_CTYPE=C.UTF-8 && \
-    python3 -m pip install nest-desktop==3.0.*
+RUN pip install nest-desktop==3.1.*
 
 
 # nginx state for serving content
-FROM nginx:stable
+FROM nginx:stable-alpine
 LABEL maintainer="Sebastian Spreizer <spreizer@web.de>"
 
-# Set working directory to nginx asset directory
-WORKDIR /usr/share/nginx/html
-
-# Remove default nginx static assets
-RUN rm -rf ./*
-
-# Copy static from installer stage
-COPY --from=installer /usr/local/lib/python3.6/dist-packages/nest_desktop/app/ .
+RUN apk add --no-cache jq bash
 
 # Add default to available sites
-COPY ./nginx/site.conf /etc/nginx/conf.d/default.conf
-COPY ./nginx/nginx.conf /etc/nginx/nginx.conf
+COPY ./nginx-default.conf /etc/nginx/conf.d/default.conf
+
+# Remove default nginx static assets
+RUN rm -rf /usr/share/nginx/html/*
+
+# Copy static from installer stage
+COPY --from=installer /usr/local/lib/python3.10/site-packages/nest_desktop/app/ /usr/share/nginx/html/
+
+# Run nginx as non-root
+RUN chmod -R 777 /var/cache/nginx
 
 RUN touch /var/run/nginx.pid && \
-  chown -R www-data:www-data /var/run/nginx.pid && \
-  chown -R www-data:www-data /var/cache/nginx && \
-  chmod -R 777 /var/cache/nginx
+    chmod -R 777 /var/run/nginx.pid
 
 EXPOSE 8000
 
+# Copy entrypoint.sh and make it executable
+COPY ./docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# Define the entrypoint
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
 # Containers run nginx with global directives and daemon off
-ENTRYPOINT ["nginx", "-g", "daemon off;"]
+CMD ["nginx", "-g", "daemon off;"]

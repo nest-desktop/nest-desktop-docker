@@ -1,13 +1,13 @@
 version: "3"
 
 services:
-  nest-desktop:
-    image: docker-registry.ebrains.eu/nest/nest-desktop:3.1
+  build-nest-desktop:
+    build: ./nest-desktop
     ports:
       - "8000:8000"
 
-  nest-simulator:
-    image: docker-registry.ebrains.eu/nest/nest-simulator:3.2
+  build-nest-simulator:
+    build: ./nest-simulator
     environment:
       NEST_CONTAINER_MODE: "nest-server"
       NEST_SERVER_BUFFER_SIZE: 65535
