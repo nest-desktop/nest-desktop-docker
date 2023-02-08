@@ -2,11 +2,19 @@ version: "3"
 
 services:
 
+  jupyterlab:
+    image: docker-registry.ebrains.eu/nest/nest-simulator:3.4_rc1
+    environment:
+      NEST_CONTAINER_MODE: "jupyterlab"
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/opt/data
+
   nest-desktop:
     image: docker-registry.ebrains.eu/nest/nest-simulator:3.4_rc1
     environment:
       NEST_CONTAINER_MODE: "nest-desktop"
-      NEST_SIMULATOR_PORT: 54321
     ports:
       - "54286:54286"
 
@@ -14,6 +22,5 @@ services:
     image: docker-registry.ebrains.eu/nest/nest-simulator:3.4_rc1
     environment:
       NEST_CONTAINER_MODE: "nest-server"
-      NEST_SERVER_PORT: 54321
     ports:
-      - "54321:54321"
+      - "52425:52425"
