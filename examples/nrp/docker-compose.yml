@@ -1,0 +1,58 @@
+version: "3"
+
+services:
+
+  insite-access-node:
+    image: docker-registry.ebrains.eu/insite/access_node:2.0_rc3
+    ports:
+      - "52056:52056"
+    depends_on:
+      - "insite-nest-module"
+    environment:
+      INSITE_NEST_BASE_URL: "insite-nest-module"
+
+  insite-nest-module:
+    image: docker-registry.ebrains.eu/insite/nest_module:3.4_rc2
+    ports:
+      - "18080:18080"
+      - "52425:52425"
+    environment:
+      NEST_CONTAINER_MODE: "nest-server"
+
+  nest-desktop:
+    image: docker-registry.ebrains.eu/nest/nest-desktop:3.2-nrp0
+    ports:
+      - "54286:54286"
+
+  nrp-backend:
+    container_name: nrp-backend
+    image: docker-registry.ebrains.eu/nrp-nest/nrp:nest-desktop
+    ports:
+      - "8080:8080"
+    volumes:
+      - nrp_user_data:/home/bbpnrsoa/.opt/nrpStorage
+      - nrp_models:/home/bbpnrsoa/nrp/src/Models
+      - nrp_experiments:/home/bbpnrsoa/nrp/src/Experiments
+    stdin_open: true
+    tty: true
+    domainname: backend.nrp
+
+  nrp-frontend:
+    container_name: nrp-frontend
+    image: docker-registry.ebrains.eu/nrp-nest/nrp_frontend:nest-desktop
+    ports:
+      - "9000:9000"
+    volumes:
+      - nrp_user_data:/home/bbpnrsoa/.opt/nrpStorage
+      - nrp_models:/home/bbpnrsoa/nrp/src/Models
+      - nrp_experiments:/home/bbpnrsoa/nrp/src/Experiments
+    stdin_open: true
+    tty: true
+    domainname: frontend.nrp
+    depends_on:
+      - nrp-backend
+
+volumes:
+  nrp_user_data:
+  nrp_models:
+  nrp_experiments:

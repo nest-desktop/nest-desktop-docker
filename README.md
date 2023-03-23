@@ -48,7 +48,7 @@ It needs a YAML file to configure services (NEST Desktop and NEST Simulator).
 Start services with a configuration file in the same directory (By default: `docker-compose.yml`).
 
 ```
-docker-compose up --build
+docker-compose up
 ```
 
 Hint: Use `--detach` when it should run in the background, and no logs will be displayed and followed.
@@ -56,12 +56,6 @@ Hint: Use `--detach` when it should run in the background, and no logs will be d
 For more information, read the [official documentation](https://docs.docker.com/compose/reference/).
 
 ##### Further methods of `docker-compose`
-
-Start services with custom configuration file.
-
-```
-docker-compose -f docker-compose-insite.yml up --build
-```
 
 Start a single service, e.g. `nest-simulator`.
 

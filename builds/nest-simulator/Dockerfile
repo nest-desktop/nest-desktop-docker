@@ -1,8 +1,8 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 LABEL maintainer="Sebastian Spreizer <spreizer@web.de>"
 ARG DEBIAN_FRONTEND=noninteractive
 
-ARG NEST_VERSION=3.2
+ARG NEST_VERSION=3.4
 ARG NEST_SRC_PATH=/tmp
 
 RUN apt-get update && apt-get install -y \
@@ -14,7 +14,6 @@ RUN apt-get update && apt-get install -y \
     libncurses5-dev \
     libreadline-dev \
     pandoc \
-    python \
     python3-dev \
     python3-pip \
     wget
@@ -25,30 +24,27 @@ RUN apt-get autoremove -y && \
 
 # Install requirements for NEST Server.
 RUN python3 -m pip install \
-    flask \
-    flask-cors \
-    RestrictedPython \
-    uwsgi
+    Flask \
+    Flask-Cors \
+    gunicorn \
+    RestrictedPython
 
 # Get released files.
 RUN wget https://github.com/nest/nest-simulator/archive/refs/tags/v${NEST_VERSION}.tar.gz -P ${NEST_SRC_PATH} && \
     cd ${NEST_SRC_PATH} && tar -zxf v${NEST_VERSION}.tar.gz
 
-# Patch version number in NEST.
-RUN wget https://github.com/nest/nest-simulator/releases/download/v3.2/nest-simulator-3.2-p1-VersionNumber.patch -P ${NEST_SRC_PATH} && \
-    cd ${NEST_SRC_PATH}/nest-simulator-${NEST_VERSION} && patch -p1 < ${NEST_SRC_PATH}/nest-simulator-3.2-p1-VersionNumber.patch
-
-RUN python3 -m pip install -r ${NEST_SRC_PATH}/nest-simulator-${NEST_VERSION}/doc/requirements.txt
+RUN python3 -m pip install -r ${NEST_SRC_PATH}/nest-simulator-${NEST_VERSION}/doc/requirements.txt && \
+    python3 -m pip install sphinx_gallery==0.10.1
 
 RUN mkdir /tmp/nest-build && cd /tmp/nest-build && \
     cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest \
           ${NEST_SRC_PATH}/nest-simulator-${NEST_VERSION} && \
-    make -j 8 && \
-    make html && \
-    make install
+    make -j $(nproc)
 
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN make doc && make install
+
+COPY ./entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-EXPOSE 5000
+EXPOSE 52425
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
