@@ -3,22 +3,23 @@ version: "3"
 services:
 
   insite-access-node:
-    image: docker-registry.ebrains.eu/insite/access_node:2.0_rc1
+    image: docker-registry.ebrains.eu/insite/access_node:2.0_rc_latest
     ports:
       - "52056:52056"
     depends_on:
       - "insite-nest-module"
-    volumes:
-      - ${PWD}/config.toml:/config.toml
+    environment:
+      INSITE_NEST_BASE_URL: "insite-nest-module"
 
   insite-nest-module:
-    image: docker-registry.ebrains.eu/insite/nest_module:3.4_rc1
+    image: docker-registry.ebrains.eu/insite/nest_module:3.4_rc_latest
     ports:
+      - "18080:18080"
       - "52425:52425"
     environment:
       NEST_CONTAINER_MODE: "nest-server"
 
   nest-desktop:
-    image: docker-registry.ebrains.eu/nest/nest-desktop:3.2_rc2
+    image: docker-registry.ebrains.eu/nest/nest-desktop:3.2-insite1
     ports:
       - "54286:54286"
