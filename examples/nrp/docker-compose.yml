@@ -3,51 +3,99 @@ version: "3"
 services:
 
   insite-access-node:
-    image: docker-registry.ebrains.eu/insite/access_node:2.0_rc3
+    image: docker-registry.ebrains.eu/insite/access_node:2.0_rc_latest
     ports:
       - "52056:52056"
     depends_on:
       - "insite-nest-module"
     environment:
       INSITE_NEST_BASE_URL: "insite-nest-module"
-
-  insite-nest-module:
-    image: docker-registry.ebrains.eu/insite/nest_module:3.4_rc2
-    ports:
-      - "18080:18080"
-      - "52425:52425"
-    environment:
-      NEST_CONTAINER_MODE: "nest-server"
+    container_name: insite-access-node
 
   nest-desktop:
-    image: docker-registry.ebrains.eu/nest/nest-desktop:3.2-nrp0
+    image: docker-registry.ebrains.eu/nest/nest-desktop:3.2-nrp1
+    environment:
+      NEST_SIMULATOR_URL: http://localhost:52425
+      INSITE_ACCESS_ENABLED: 1
+      INSITE_ACCESS_URL: http://localhost:52056
     ports:
       - "54286:54286"
+    container_name: nrp-nest-desktop
+
+  insite-nest-module:
+    image: docker-registry.ebrains.eu/insite/nest_module:3.4_rc_latest
+    ports:
+      - "52425:52425"
+      - "9000-9005:9000-9005"
+    environment:
+      # INSITE_DOCKER_USE_NEST_SERVER: 1
+      NEST_CONTAINER_MODE: "nest-server"
+      # NEST_SERVER_HOST: "0.0.0.0"
+      # NEST_SERVER_MODULES: "nest,numpy"
+      # NEST_SERVER_PORT: 52425
+      # NEST_SERVER_RESTRICTION_OFF: 1
+      # NEST_SERVER_STDOUT: 1
+    container_name: insite-nest-module
+    stdin_open: true
+    tty: true
 
   nrp-backend:
-    container_name: nrp-backend
-    image: docker-registry.ebrains.eu/nrp-nest/nrp:nest-desktop
+    image: docker-registry.ebrains.eu/nrp-nest/nrp:nest-desktop-dev3
     ports:
-      - "8080:8080"
+      - 8090:8090
     volumes:
       - nrp_user_data:/home/bbpnrsoa/.opt/nrpStorage
       - nrp_models:/home/bbpnrsoa/nrp/src/Models
       - nrp_experiments:/home/bbpnrsoa/nrp/src/Experiments
+    environment:
+      NEST_SIMULATOR_HOST: insite-nest-module
+      NEST_SIMULATOR_PORT: 52425
+      NRP_FRONTEND_INTERNAL_PORT: 9002
     stdin_open: true
     tty: true
+    container_name: nrp-backend
     domainname: backend.nrp
 
-  nrp-frontend:
-    container_name: nrp-frontend
-    image: docker-registry.ebrains.eu/nrp-nest/nrp_frontend:nest-desktop
+  nrp-proxy:
+    image: docker-registry.ebrains.eu/nrp-nest/nrp_proxy:nest-desktop-dev3
     ports:
-      - "9000:9000"
+      - 9100:9000
     volumes:
       - nrp_user_data:/home/bbpnrsoa/.opt/nrpStorage
       - nrp_models:/home/bbpnrsoa/nrp/src/Models
       - nrp_experiments:/home/bbpnrsoa/nrp/src/Experiments
+    environment:
+      NRP_USERNAME: nrpdemo
+      NRP_PASSWORD: nestdesktop
+      NRP_PROXY_HOST_PORT: 9100
+      NRP_BACKEND_HOST_PORT: 8090
+      NRP_FRONTEND_INTERNAL_PORT: 9002
+      NRP_HOST_ADDRESS: localhost
     stdin_open: true
     tty: true
+    container_name: nrp-proxy
+    domainname: proxy.nrp
+    depends_on:
+      - nrp-frontend
+      - nrp-backend
+
+  nrp-frontend:
+    image: docker-registry.ebrains.eu/nrp-nest/nrp_frontend:nest-desktop-dev3
+    ports:
+      - 9200:9002
+    volumes:
+      - nrp_user_data:/home/bbpnrsoa/.opt/nrpStorage
+      - nrp_models:/home/bbpnrsoa/nrp/src/Models
+      - nrp_experiments:/home/bbpnrsoa/nrp/src/Experiments
+    environment:
+      NRP_PROXY_HOST_PORT: 9100
+      NRP_BACKEND_HOST_PORT: 8090
+      NRP_HOST_ADDRESS: localhost
+      NRP_FRONTEND_INTERNAL_PORT: 9002
+      NEST_DESKTOP_PORT: 54286
+    stdin_open: true
+    tty: true
+    container_name: nrp-frontend
     domainname: frontend.nrp
     depends_on:
       - nrp-backend
