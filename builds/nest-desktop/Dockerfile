@@ -1,7 +1,7 @@
 # Name the stage "installer"
 FROM python:3.10-slim AS installer
 
-RUN pip install nest-desktop==3.1.*
+RUN pip install nest-desktop==3.2.*
 
 
 # nginx state for serving content

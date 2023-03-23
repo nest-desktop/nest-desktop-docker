@@ -2,7 +2,7 @@ FROM ubuntu:22.04
 LABEL maintainer="Sebastian Spreizer <spreizer@web.de>"
 ARG DEBIAN_FRONTEND=noninteractive
 
-ARG NEST_VERSION=3.4_rc1
+ARG NEST_VERSION=3.4
 ARG NEST_SRC_PATH=/tmp
 
 RUN apt-get update && apt-get install -y \
@@ -40,9 +40,8 @@ RUN mkdir /tmp/nest-build && cd /tmp/nest-build && \
     cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/nest \
           ${NEST_SRC_PATH}/nest-simulator-${NEST_VERSION} && \
     make -j $(nproc)
-    
-RUN make doc && \
-    make install
+
+RUN make doc && make install
 
 COPY ./entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
