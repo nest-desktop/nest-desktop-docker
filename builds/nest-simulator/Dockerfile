@@ -2,7 +2,7 @@ FROM ubuntu:22.04
 LABEL maintainer="Sebastian Spreizer <spreizer@web.de>"
 ARG DEBIAN_FRONTEND=noninteractive
 
-ARG NEST_VERSION=3.4
+ARG NEST_VERSION=3.5
 ARG NEST_SRC_PATH=/tmp
 
 RUN apt-get update && apt-get install -y \
