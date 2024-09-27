@@ -20,6 +20,6 @@ services:
       NEST_CONTAINER_MODE: "nest-server"
 
   nest-desktop:
-    image: docker-registry.ebrains.eu/nest/nest-desktop:3.2-insite1
+    image: docker-registry.ebrains.eu/nest/nest-desktop:3.3
     ports:
       - "54286:54286"

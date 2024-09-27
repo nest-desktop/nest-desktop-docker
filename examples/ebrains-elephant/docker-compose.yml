@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+  elephant:
+    image: docker-registry.ebrains.eu/elephant/elephant-server:dev
+    ports:
+      - "5001:5001"
+
+  nest-desktop:
+    image: docker-registry.ebrains.eu/nest/nest-desktop:3.2
+    ports:
+      - "54286:54286"
+
+  nest-simulator:
+    image: docker-registry.ebrains.eu/nest/nest-simulator:3.4
+    environment:
+      NEST_CONTAINER_MODE: "nest-server"
+    ports:
+      - "52425:52425"
