@@ -1,9 +1,9 @@
 # Name the stage "installer"
-FROM python:3.10-slim AS installer
+FROM python:3.12-slim AS installer
 
 RUN pip install --upgrade pip
 
-RUN pip install nest-desktop==3.3.0rc1
+RUN pip install nest-desktop==3.3.1
 
 # nginx state for serving content
 FROM nginx:stable-alpine
