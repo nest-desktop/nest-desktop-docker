@@ -3,7 +3,7 @@ FROM python:3.12-slim AS installer
 
 RUN pip install --upgrade pip
 
-RUN pip install nest-desktop==3.3.1
+RUN pip install nest-desktop==4.0.0
 
 # nginx state for serving content
 FROM nginx:stable-alpine
