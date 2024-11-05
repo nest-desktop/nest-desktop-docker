@@ -2,7 +2,7 @@ version: "3"
 
 services:
   jupyterlab:
-    image: nest/nest-simulator:3.7
+    image: nest/nest-simulator:3.8
     environment:
       NEST_CONTAINER_MODE: "jupyterlab"
     ports:
@@ -11,14 +11,14 @@ services:
       - .:/opt/data
 
   nest-desktop:
-    image: nest/nest-simulator:3.7
+    image: nest/nest-simulator:3.8
     environment:
       NEST_CONTAINER_MODE: "nest-desktop"
     ports:
       - "54286:54286"
 
   nest-server:
-    image: nest/nest-simulator:3.7
+    image: nest/nest-simulator:3.8
     environment:
       NEST_CONTAINER_MODE: "nest-server"
     ports:
