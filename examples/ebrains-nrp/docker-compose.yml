@@ -13,7 +13,7 @@ services:
     container_name: insite-access-node
 
   nest-desktop:
-    image: docker-registry.ebrains.eu/nest/nest-desktop:3.2-nrp1
+    image: docker-registry.ebrains.eu/nest/nest-desktop:3.3
     environment:
       NEST_SIMULATOR_URL: http://localhost:52425
       INSITE_ACCESS_ENABLED: 1

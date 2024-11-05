@@ -1,8 +1,9 @@
 # Name the stage "installer"
-FROM python:3.10-slim AS installer
+FROM python:3.12-slim AS installer
 
-RUN pip install nest-desktop==3.2.*
+RUN pip install --upgrade pip
 
+RUN pip install nest-desktop==4.0.0
 
 # nginx state for serving content
 FROM nginx:stable-alpine
@@ -19,6 +20,8 @@ RUN rm -rf /usr/share/nginx/html/*
 
 # Copy static from installer stage
 COPY --from=installer /usr/local/lib/python3.10/site-packages/nest_desktop/app/ /usr/share/nginx/html/
+
+RUN chmod -R 777 /usr/share/nginx/html/config
 
 # Run nginx as non-root
 RUN chmod -R 777 /var/cache/nginx
