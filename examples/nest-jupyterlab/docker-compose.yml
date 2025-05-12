@@ -1,0 +1,23 @@
+services:
+  jupyterlab:
+    image: nest/nest-simulator:3.8
+    environment:
+      NEST_CONTAINER_MODE: "jupyterlab"
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/opt/data
+
+  nest-desktop:
+    image: nest/nest-simulator:3.8
+    environment:
+      NEST_CONTAINER_MODE: "nest-desktop"
+    ports:
+      - "54286:54286"
+
+  nest-simulator:
+    image: nest/nest-simulator:3.8
+    environment:
+      NEST_CONTAINER_MODE: "nest-server"
+    ports:
+      - "52425:52425"

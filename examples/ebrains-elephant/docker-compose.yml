@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   elephant:
     image: docker-registry.ebrains.eu/elephant/elephant-server:dev

@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   insite-access-node:
     image: docker-registry.ebrains.eu/insite/access_node:2.0_rc_latest
@@ -19,6 +17,6 @@ services:
       NEST_CONTAINER_MODE: "nest-server"
 
   nest-desktop:
-    image: docker-registry.ebrains.eu/nest/nest-desktop:4.0-beta12
+    image: docker-registry.ebrains.eu/nest/nest-desktop:3.3
     ports:
       - "54286:54286"

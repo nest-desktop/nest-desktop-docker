@@ -1,14 +1,10 @@
-version: "3"
-
 services:
-  build-nest-desktop:
+  nest-desktop:
     build: ./nest-desktop
     ports:
       - "54286:54286"
 
-  build-nest-simulator:
+  nest-simulator:
     build: ./nest-simulator
-    environment:
-      NEST_CONTAINER_MODE: "nest-server"
     ports:
       - "52425:52425"

@@ -1,7 +1,6 @@
 ARG NEST_VERSION=3.8
 
-FROM ubuntu:22.04 as builder
-LABEL maintainer="Sebastian Spreizer <spreizer@web.de>"
+FROM ubuntu:22.04 AS builder
 ARG NEST_VERSION
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
@@ -26,6 +25,7 @@ RUN mkdir /tmp/nest-build && cd $_ && \
 
 
 FROM ubuntu:22.04
+LABEL maintainer="Sebastian Spreizer <spreizer@web.de>"
 ARG NEST_VERSION
 
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
@@ -37,7 +37,6 @@ RUN apt-get autoremove -y && \
     rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /tmp/nest-simulator-${NEST_VERSION} /tmp/nest-simulator
-COPY --from=builder /opt/nest /opt/nest
 
 RUN python3 -m pip install --upgrade pip && \
     python3 -m pip install numpy pandas && \

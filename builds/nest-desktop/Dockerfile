@@ -1,9 +1,11 @@
+ARG NEST_DESKTOP_VERSION=4.1
+
 # Name the stage "installer"
 FROM python:3.12-slim AS installer
 
 RUN pip install --upgrade pip
 
-RUN pip install nest-desktop==4.0.0
+RUN pip install nest-desktop==${NEST_DESKTOP_VERSION}.*
 
 # nginx state for serving content
 FROM nginx:stable-alpine
@@ -19,7 +21,7 @@ COPY ./nginx-default.conf /etc/nginx/conf.d/default.conf
 RUN rm -rf /usr/share/nginx/html/*
 
 # Copy static from installer stage
-COPY --from=installer /usr/local/lib/python3.10/site-packages/nest_desktop/app/ /usr/share/nginx/html/
+COPY --from=installer /usr/local/lib/python3.12/site-packages/nest_desktop/app/ /usr/share/nginx/html/
 
 RUN chmod -R 777 /usr/share/nginx/html/config
 
