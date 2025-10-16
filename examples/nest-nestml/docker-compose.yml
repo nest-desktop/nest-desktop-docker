@@ -1,6 +1,6 @@
 services:
   nest-desktop:
-    image: nest/nest-desktop:4.1
+    image: nest/nest-desktop:4.2
     ports:
       - "54286:54286"
 

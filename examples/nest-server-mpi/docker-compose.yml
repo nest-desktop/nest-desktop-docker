@@ -1,13 +1,13 @@
 services:
   nest-desktop:
-    image: nest/nest-simulator:3.8
+    image: nest/nest-simulator:3.9
     environment:
       NEST_CONTAINER_MODE: "nest-desktop"
     ports:
       - "54286:54286"
 
   nest-server-mpi:
-    image: nest/nest-simulator:3.8
+    image: nest/nest-simulator:3.9
     environment:
       NEST_CONTAINER_MODE: "nest-server-mpi"
       NEST_SERVER_MPI_NUM: 3

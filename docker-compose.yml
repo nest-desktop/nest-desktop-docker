@@ -1,11 +1,11 @@
 services:
   nest-desktop:
-    image: nest/nest-desktop:4.0
+    image: nest/nest-desktop:4.2
     ports:
       - "54286:54286"
 
   nest-simulator:
-    image: nest/nest-simulator:3.8
+    image: nest/nest-simulator:3.9
     environment:
       NEST_CONTAINER_MODE: "nest-server"
     ports:
